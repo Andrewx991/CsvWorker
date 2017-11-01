@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace CsvWorker
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             var result = Parser.Default.ParseArguments<Options>(args)
                 .WithParsed(LaunchWorker)
@@ -20,7 +20,8 @@ namespace CsvWorker
 
         private static void LaunchWorker(Options options)
         {
-            // TODO
+            var worker = new Worker(options.InputDirectory, options.OutputDirectory, options.ErrorDirectory);
+            worker.Start();
         }
     }
 }
