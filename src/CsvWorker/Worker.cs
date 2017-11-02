@@ -34,7 +34,7 @@ namespace CsvWorker
                 foreach (var filepath in unprocessedFiles)
                 {
                     var filename = Path.GetFileName(filepath);
-                    processedFiles.Add(filepath);
+                    processedFiles.Add(filename);
                     int currentLineNumber = 1;
 
                     using (var reader = new StreamReader(filepath))
