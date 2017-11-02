@@ -37,15 +37,15 @@ namespace CsvWorker
                     processedFiles.Add(filename);
                     int currentLineNumber = 1;
 
-                    using (var reader = new StreamReader(filepath))
+                    using (var streamReader = new StreamReader(filepath))
                     using (var streamWriter = new StreamWriter(Path.Combine(outputDirectory, filename.Replace("csv", "json"))))
                     using (var jsonWriter = new JsonTextWriter(streamWriter))
                     {
                         jsonWriter.WriteStartArray();
 
-                        while (!reader.EndOfStream)
+                        while (!streamReader.EndOfStream)
                         {
-                            var line = reader.ReadLine();
+                            var line = streamReader.ReadLine();
 
                             if (String.IsNullOrWhiteSpace(line))
                                 continue;
