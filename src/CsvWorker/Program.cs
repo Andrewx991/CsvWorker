@@ -8,6 +8,8 @@ namespace CsvWorker
     {
         public static void Main(string[] args)
         {
+            Console.WriteLine("Started...");
+
             var result = Parser.Default.ParseArguments<Options>(args)
                 .WithParsed(LaunchWorker)
                 .WithNotParsed(TerminateUnsuccessfully);
