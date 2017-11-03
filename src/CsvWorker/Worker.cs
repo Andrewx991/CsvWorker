@@ -27,14 +27,14 @@ namespace CsvWorker
             while (true)
             {
                 var files = Directory.GetFiles(inputDirectory);
-
                 var unprocessedFiles = files.Except(processedFiles);
 
                 foreach (var filepath in unprocessedFiles)
                 {
                     var filename = Path.GetFileName(filepath);
-                    processedFiles.Add(filename);
                     int currentLineNumber = 1;
+
+                    processedFiles.Add(filename);
 
                     using (var streamReader = new StreamReader(filepath))
                     using (var streamWriter = new StreamWriter(Path.Combine(outputDirectory, filename.Replace("csv", "json"))))
