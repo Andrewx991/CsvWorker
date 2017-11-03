@@ -28,8 +28,10 @@ Assumption:
  - Files can be empty, contain just the header, or contain an extremely large amount of rows.
  - Performance should be reasonable, but varies on hardware resources. Multithreading perofmance not required at this time.
  - No timeout per file is required at this time.
- - No file size limit required, but will implement a configurable one to account for underlying file system limitations.
- - No limit for max possible number of files, but tracking processed files requires state which has limits, will make max configurable. If limit hit, program will terminate with error code.
+ - No file size limit required, not implementing file size restrictions at this time.
+ - No limit for max possible number of files, not implementing file count restrictions at this time.
+
+
 
  # Ambiguity on how to handle partially processed files
 

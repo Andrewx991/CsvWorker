@@ -13,7 +13,7 @@ namespace CsvWorker
         private readonly string outputDirectory;
         private readonly string errorDirectory;
         private const int SLEEP_INTERVAL_MILLISECONDS = 5000;
-        private HashSet<string> processedFiles = new HashSet<string>();
+        private HashSet<string> processedFilepaths = new HashSet<string>();
 
         public Worker(string inputDirectory, string outputDirectory, string errorDirectory)
         {
@@ -26,15 +26,16 @@ namespace CsvWorker
         {
             while (true)
             {
-                var files = Directory.GetFiles(inputDirectory);
-                var unprocessedFiles = files.Except(processedFiles);
+                var filepaths = Directory.GetFiles(inputDirectory);
+                var unprocessedFiles = filepaths.Except(processedFilepaths);
 
                 foreach (var filepath in unprocessedFiles)
                 {
                     var filename = Path.GetFileName(filepath);
                     int currentLineNumber = 1;
+                    bool processedSuccessfully = true;
 
-                    processedFiles.Add(filename);
+                    processedFilepaths.Add(filepath);
 
                     using (var streamReader = new StreamReader(filepath))
                     using (var streamWriter = new StreamWriter(Path.Combine(outputDirectory, filename.Replace("csv", "json", StringComparison.OrdinalIgnoreCase))))
@@ -56,6 +57,7 @@ namespace CsvWorker
                                 if (!ValidHeaders(values))
                                 {
                                     LogError(filename, "Invalid Header Row.", currentLineNumber);
+                                    processedSuccessfully = false;
                                 }
                             }
                             else
@@ -66,6 +68,7 @@ namespace CsvWorker
                                 if(!parsed)
                                 {
                                     LogError(filename, "Row Parsing Error", currentLineNumber);
+                                    processedSuccessfully = false;
                                     break;
                                 }
                                 else
@@ -83,7 +86,10 @@ namespace CsvWorker
                         jsonWriter.WriteEndArray();
                     }
 
-                    File.Delete(filepath);
+                    if (processedSuccessfully)
+                    {
+                        File.Delete(filepath);
+                    }
                 }
 
                 Thread.Sleep(SLEEP_INTERVAL_MILLISECONDS);
