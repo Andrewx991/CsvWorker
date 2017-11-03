@@ -37,7 +37,7 @@ namespace CsvWorker
                     processedFiles.Add(filename);
 
                     using (var streamReader = new StreamReader(filepath))
-                    using (var streamWriter = new StreamWriter(Path.Combine(outputDirectory, filename.Replace("csv", "json"))))
+                    using (var streamWriter = new StreamWriter(Path.Combine(outputDirectory, filename.Replace("csv", "json", StringComparison.OrdinalIgnoreCase))))
                     using (var jsonWriter = new JsonTextWriter(streamWriter))
                     {
                         jsonWriter.WriteStartArray();
