@@ -55,7 +55,7 @@ namespace CsvWorker
                             {
                                 if (!ValidHeaders(values))
                                 {
-                                    LogError(filename, currentLine);
+                                    LogError(filename, "Invalid Header Row.", currentLineNumber);
                                 }
                             }
                             else
@@ -65,7 +65,7 @@ namespace CsvWorker
 
                                 if(!parsed)
                                 {
-                                    LogError(filename, currentLine);
+                                    LogError(filename, "Row Parsing Error", currentLineNumber);
                                     break;
                                 }
                                 else
@@ -90,9 +90,11 @@ namespace CsvWorker
             }
         }
 
-        private void LogError(string filepath, string line)
+        private void LogError(string filepath, string message, int lineNumber)
         {
-            File.AppendAllLines(Path.Combine(errorDirectory, filepath), new[] { line });
+            var lineMessage = "LINE_NUM : " + lineNumber;
+            var errorMessage = "ERROR_MSG : " + message;
+            File.AppendAllLines(Path.Combine(errorDirectory, filepath), new[] { lineMessage, errorMessage });
         }
 
         private bool ValidHeaders(IEnumerable<string> headers)
