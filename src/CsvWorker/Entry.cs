@@ -19,7 +19,7 @@ namespace CsvWorker
                 {
                     { 0, (s) => !String.IsNullOrWhiteSpace(s) && s.Trim().Length == 8 && s.Trim().All(char.IsDigit) },
                     { 1, (s) => !String.IsNullOrWhiteSpace(s) && s.Trim().Length <= 15 },
-                    { 2, (s) => s.Length <= 15 },
+                    { 2, (s) => s == null || s.Length <= 15 },
                     { 3, (s) => !String.IsNullOrWhiteSpace(s) && s.Trim().Length <= 15 },
                     { 4, (s) => !String.IsNullOrWhiteSpace(s) && new Regex(@"^\d{3}-\d{3}-\d{4}$").IsMatch(s.Trim()) },
                 };
