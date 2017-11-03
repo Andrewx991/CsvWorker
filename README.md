@@ -8,7 +8,7 @@
 1. Program will poll for new files every 5 seconds.
 1. Ctrl+C to terminate.
 
-# Know Issues
+# Known Issues
 
 1. Not using a standard csv parsing library, so no comma escape support.
 1. If forcibly terminated during processing output files may be invalid.
