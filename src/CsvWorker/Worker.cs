@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace CsvWorker
 {
-    internal partial class Worker
+    internal class Worker
     {
         private readonly string inputDirectory;
         private readonly string outputDirectory;
