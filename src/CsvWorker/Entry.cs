@@ -17,7 +17,7 @@ namespace CsvWorker
             {
                 var validationRules = new Dictionary<int, Func<string, bool>>()
                 {
-                    { 0, (s) => !String.IsNullOrWhiteSpace(s) && s.Trim().Length == 8 && s.All(char.IsDigit) },
+                    { 0, (s) => !String.IsNullOrWhiteSpace(s) && s.Trim().Length == 8 && s.Trim().All(char.IsDigit) },
                     { 1, (s) => !String.IsNullOrWhiteSpace(s) && s.Trim().Length <= 15 },
                     { 2, (s) => s.Length <= 15 },
                     { 3, (s) => !String.IsNullOrWhiteSpace(s) && s.Trim().Length <= 15 },
