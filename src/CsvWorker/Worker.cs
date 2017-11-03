@@ -44,18 +44,18 @@ namespace CsvWorker
 
                         while (!streamReader.EndOfStream)
                         {
-                            var line = streamReader.ReadLine();
+                            var currentLine = streamReader.ReadLine();
 
-                            if (String.IsNullOrWhiteSpace(line))
+                            if (String.IsNullOrWhiteSpace(currentLine))
                                 continue;
 
-                            var values = line.Split(',');
+                            var values = currentLine.Split(',');
 
                             if (currentLineNumber == 1)
                             {
                                 if (!ValidHeaders(values))
                                 {
-                                    LogError(filename, line);
+                                    LogError(filename, currentLine);
                                 }
                             }
                             else
@@ -65,7 +65,7 @@ namespace CsvWorker
 
                                 if(!parsed)
                                 {
-                                    LogError(filename, line);
+                                    LogError(filename, currentLine);
                                     break;
                                 }
                                 else
