@@ -18,7 +18,7 @@
 
 # Assumptions
 
-## How to handle files its already seen.
+## How to handle files its already seen
 
 Requirements stated to only process new files.
 New files were defined as the name was not yet observed.
@@ -40,11 +40,10 @@ No specific performance or environment requirements were provided. Made the foll
 - No need for multi-threading at this time.
 - No need for time limits per file.
 
-## This solution does not have to account for reprocessing files once fixed.
+## This solution does not have to account for reprocessing files once fixed
 
 Assumed that this system doesn't need to handle re-parsing a corrected file and making sure the output file is updated/corrected. Also assumed we should not delete files that have only been partially processed.
 
 ## Did not design to be used generically
 
 Despite headers being provided with the csv, the output structure still requires the code to be aware of specific field name, relationships, and validation rules.
-
