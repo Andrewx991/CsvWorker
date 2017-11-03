@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -14,22 +15,29 @@ namespace CsvWorker
 
             public static bool TryParse(string[] values, out Entry parsedEntry)
             {
-                if (values.Count() != 5)
+                var validationRules = new Dictionary<int, Func<string, bool>>()
                 {
-                    parsedEntry = null;
-                    return false;
+                    { 0, (s) => !String.IsNullOrWhiteSpace(s) && s.Trim().Length == 8 && s.All(char.IsDigit) },
+                    { 1, (s) => !String.IsNullOrWhiteSpace(s) && s.Trim().Length <= 15 },
+                    { 2, (s) => s.Length <= 15 },
+                    { 3, (s) => !String.IsNullOrWhiteSpace(s) && s.Trim().Length <= 15 },
+                    { 4, (s) => !String.IsNullOrWhiteSpace(s) && new Regex(@"^\d{3}-\d{3}-\d{4}$").IsMatch(s.Trim()) },
+                };
+
+                int index = 0;
+                foreach (var value in values)
+                {
+                    var valid = validationRules[index](value);
+
+                    if (!valid)
+                    {
+                        parsedEntry = null;
+                        return false;
+                    }
+                    index++;
                 }
 
-                if (String.IsNullOrWhiteSpace(values[0]) ||
-                    String.IsNullOrWhiteSpace(values[1]) ||
-                    String.IsNullOrWhiteSpace(values[3]) ||
-                    String.IsNullOrWhiteSpace(values[4]))
-                {
-                    parsedEntry = null;
-                    return false;
-                }
-
-                if (!new Regex(@"^\d{3}-\d{3}-\d{4}$").IsMatch(values[4].Trim()))
+                if (index != 5)
                 {
                     parsedEntry = null;
                     return false;

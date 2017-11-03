@@ -47,36 +47,35 @@ namespace CsvWorker
                         {
                             var currentLine = streamReader.ReadLine();
 
-                            if (String.IsNullOrWhiteSpace(currentLine))
-                                continue;
-
-                            var values = currentLine.Split(',');
-
-                            if (currentLineNumber == 1)
+                            if (!String.IsNullOrWhiteSpace(currentLine))
                             {
-                                if (!ValidHeaders(values))
-                                {
-                                    LogError(filename, "Invalid Header Row.", currentLineNumber);
-                                    processedSuccessfully = false;
-                                }
-                            }
-                            else
-                            {
-                                Entry entry = null;
-                                var parsed = Entry.TryParse(values, out entry);
+                                var values = currentLine.Split(',');
 
-                                if(!parsed)
+                                if (currentLineNumber == 1)
                                 {
-                                    LogError(filename, "Row Parsing Error", currentLineNumber);
-                                    processedSuccessfully = false;
-                                    break;
+                                    if (!ValidHeaders(values))
+                                    {
+                                        LogError(filename, "Invalid Header Row.", currentLineNumber);
+                                        processedSuccessfully = false;
+                                    }
                                 }
                                 else
                                 {
-                                    var settings = new JsonSerializerSettings();
-                                    settings.NullValueHandling = NullValueHandling.Ignore;
-                                    var jsonEntry = JsonConvert.SerializeObject(entry, Formatting.Indented, settings);
-                                    jsonWriter.WriteRawValue(jsonEntry);
+                                    Entry entry = null;
+                                    var parsed = Entry.TryParse(values, out entry);
+
+                                    if (!parsed)
+                                    {
+                                        LogError(filename, "Row Parsing Error", currentLineNumber);
+                                        processedSuccessfully = false;
+                                    }
+                                    else
+                                    {
+                                        var settings = new JsonSerializerSettings();
+                                        settings.NullValueHandling = NullValueHandling.Ignore;
+                                        var jsonEntry = JsonConvert.SerializeObject(entry, Formatting.Indented, settings);
+                                        jsonWriter.WriteRawValue(jsonEntry);
+                                    }
                                 }
                             }
 
@@ -106,7 +105,7 @@ namespace CsvWorker
         private bool ValidHeaders(IEnumerable<string> headers)
         {
             var expected = new[] { "INTERNAL_ID", "FIRST_NAME", "MIDDLE_NAME", "LAST_NAME", "PHONE_NUM" };
-            return expected.SequenceEqual(headers.Select(header => header.ToUpper()));
+            return expected.SequenceEqual(headers.Select(header => header.ToUpper().Trim()));
         }
     }
 }
